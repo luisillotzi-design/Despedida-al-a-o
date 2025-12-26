@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Regalo de Fin de Año</title>
+    <style>
+        body {
+            margin: 0;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background-color: #ffc0cb;
+            background-image: radial-gradient(circle, #ffffff 10%, transparent 10%);
+            background-size: 50px 50px;
+            font-family: 'Arial', sans-serif;
+            overflow: hidden;
+        }
+
+        .envelope-wrapper {
+            cursor: pointer;
+            transition: transform 0.3s;
+            z-index: 5;
+        }
+
+        .envelope-wrapper:hover {
+            transform: scale(1.05);
+        }
+
+        .envelope {
+            position: relative;
+            width: 200px;
+            height: 130px;
+            background-color: #ffffff;
+            border-radius: 5px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        }
+
+        .envelope::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            z-index: 2;
+            border-left: 100px solid transparent;
+            border-right: 100px solid transparent;
+            border-top: 70px solid #f2f2f2;
+        }
+
+        .heart {
+            position: relative;
+            width: 50px;
+            height: 50px;
+            background-color: #ff4d6d;
+            z-index: 3;
+            transform: rotate(-45deg);
+            animation: latido 1s infinite;
+        }
+
+        .heart::before, .heart::after {
+            content: "";
+            position: absolute;
+            width: 50px;
+            height: 50px;
+            background-color: #ff4d6d;
+            border-radius: 50%;
+        }
+
+        .heart::before { top: -25px; left: 0; }
+        .heart::after { left: 25px; top: 0; }
+
+        @keyframes latido {
+            0% { transform: scale(0.8) rotate(-45deg); }
+            50% { transform: scale(1) rotate(-45deg); }
+            100% { transform: scale(0.8) rotate(-45deg); }
+        }
+
+        .countdown {
+            margin-top: 30px;
+            background: rgba(255, 255, 255, 0.8);
+            padding: 10px 20px;
+            border-radius: 20px;
+            color: #ff4d6d;
+            font-weight: bold;
+            font-size: 1.1rem;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+
+    <audio id="miMusica" loop>
+        <source src="musica.mp3" type="audio/mpeg">
+        Tu navegador no soporta el audio.
+    </audio>
+
+    <div class="envelope-wrapper" onclick="intentarDescargar()">
+        <div class="envelope">
+            <div class="heart"></div>
+        </div>
+    </div>
+
+    <div class="countdown" id="reloj">Calculando tiempo...</div>
+
+    <script>
+        const fechaObjetivo = new Date(2025, 11, 31, 23, 59, 0).getTime(); 
+        const musica = document.getElementById("miMusica");
+
+        function actualizarReloj() {
+            const ahora = new Date().getTime();
+            const distancia = fechaObjetivo - ahora;
+
+            if (distancia < 0) {
+                document.getElementById("reloj").innerHTML = "¡FELIZ AÑO NUEVO!<br>Toca el corazón para abrir tu carta.";
+            } else {
+                const dias = Math.floor(distancia / (1000 * 60 * 60 * 24));
+                const horas = Math.floor((distancia % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const minutos = Math.floor((distancia % (1000 * 60 * 60)) / (1000 * 60));
+                const segundos = Math.floor((distancia % (1000 * 60)) / 1000);
+
+                document.getElementById("reloj").innerHTML = 
+                    `Tu sorpresa estará lista en:<br>${dias}d ${horas}h ${minutos}m ${segundos}s`;
+            }
+        }
+
+        setInterval(actualizarReloj, 1000);
+
+        function intentarDescargar() {
+            // Iniciar música al hacer clic (necesario por seguridad del navegador)
+            musica.play().catch(error => console.log("Esperando interacción para audio"));
+
+            const ahora = new Date().getTime();
+            if (ahora >= fechaObjetivo) {
+                const link = document.createElement('a');
+                link.href = 'carta.pdf'; 
+                link.download = 'Carta_Especial_2026.pdf';
+                link.click();
+            } else {
+                alert("¡Aún no es momento! Pero disfruta de la música mientras esperas ❤️");
+            }
+        }
+    </script>
+</body>
+</html>
