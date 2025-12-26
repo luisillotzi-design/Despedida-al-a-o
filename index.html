@@ -5,36 +5,44 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Regalo de Fin de Año</title>
     <style>
-        .clouds {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: url('https://www.transparenttextures.com/patterns/clouds.png') repeat;
-    background-size: 600px;
-    opacity: 0.5;
-    animation: moveClouds 30s linear infinite;
-    z-index: 1; /* Para que esté detrás del sobre */
-}
-
-@keyframes moveClouds {
-    from { background-position: 0 0; }
-    to { background-position: 1000px 0; }
-}
+        /* CONFIGURACIÓN DEL FONDO ROSA */
         body {
-          <div class="clouds"></div>
-            
+            margin: 0;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background-color: #ffc0cb; /* Rosa principal */
+            font-family: 'Arial', sans-serif;
+            overflow: hidden;
+            position: relative;
+        }
 
+        /* CAPA DE NUBES ANIMADAS */
+        .clouds {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('https://www.transparenttextures.com/patterns/clouds.png') repeat;
+            background-size: 600px;
+            opacity: 0.6;
+            animation: moveClouds 40s linear infinite;
+            z-index: 1;
+        }
 
-@keyframes moveClouds {
-    from { background-position: 0 0; }
-    to { background-position: 1000px 0; }
-}
+        @keyframes moveClouds {
+            from { background-position: 0 0; }
+            to { background-position: 1000px 0; }
+        }
+
+        /* DISEÑO DEL SOBRE */
         .envelope-wrapper {
             cursor: pointer;
             transition: transform 0.3s;
-            z-index: 5;
+            z-index: 10; /* Por encima de las nubes */
         }
 
         .envelope-wrapper:hover {
@@ -50,7 +58,7 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
         }
 
         .envelope::before {
@@ -60,9 +68,10 @@
             z-index: 2;
             border-left: 100px solid transparent;
             border-right: 100px solid transparent;
-            border-top: 70px solid #f2f2f2;
+            border-top: 75px solid #f9f9f9;
         }
 
+        /* CORAZÓN ANIMADO */
         .heart {
             position: relative;
             width: 50px;
@@ -91,24 +100,29 @@
             100% { transform: scale(0.8) rotate(-45deg); }
         }
 
+        /* ESTILO DEL CONTADOR */
         .countdown {
+            position: relative;
+            z-index: 10;
             margin-top: 30px;
-            background: rgba(255, 255, 255, 0.8);
-            padding: 10px 20px;
-            border-radius: 20px;
+            background: rgba(255, 255, 255, 0.9);
+            padding: 15px 25px;
+            border-radius: 30px;
             color: #ff4d6d;
             font-weight: bold;
             font-size: 1.1rem;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
             text-align: center;
+            border: 2px solid #fff;
         }
     </style>
 </head>
 <body>
 
+    <div class="clouds"></div>
+
     <audio id="miMusica" loop>
         <source src="musica.mp3" type="audio/mpeg">
-        Tu navegador no soporta el audio.
     </audio>
 
     <div class="envelope-wrapper" onclick="intentarDescargar()">
@@ -117,9 +131,10 @@
         </div>
     </div>
 
-    <div class="countdown" id="reloj">Calculando tiempo...</div>
+    <div class="countdown" id="reloj">Cargando sorpresa...</div>
 
     <script>
+        // FECHA OBJETIVO: 31 de Dic 2025, 23:59:00
         const fechaObjetivo = new Date(2025, 11, 31, 23, 59, 0).getTime(); 
         const musica = document.getElementById("miMusica");
 
@@ -128,7 +143,7 @@
             const distancia = fechaObjetivo - ahora;
 
             if (distancia < 0) {
-                document.getElementById("reloj").innerHTML = "¡FELIZ AÑO NUEVO!<br>Toca el corazón para abrir tu carta.";
+                document.getElementById("reloj").innerHTML = "¡FELIZ AÑO NUEVO!<br>Toca el corazón para tu regalo 🎁";
             } else {
                 const dias = Math.floor(distancia / (1000 * 60 * 60 * 24));
                 const horas = Math.floor((distancia % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
@@ -143,21 +158,21 @@
         setInterval(actualizarReloj, 1000);
 
         function intentarDescargar() {
-            // Iniciar música al hacer clic (necesario por seguridad del navegador)
-            musica.play().catch(error => console.log("Esperando interacción para audio"));
+            // Activa la música al hacer clic
+            musica.play().catch(e => console.log("Audio esperando interacción"));
 
             const ahora = new Date().getTime();
             if (ahora >= fechaObjetivo) {
                 const link = document.createElement('a');
                 link.href = 'carta.pdf'; 
-                link.download = 'Carta_Especial_2026.pdf';
+                link.download = 'Sorpresa_2026.pdf';
                 link.click();
             } else {
-                alert("¡Aún no es momento! Pero disfruta de la música mientras esperas ❤️");
+                alert("¡Paciencia! Aún faltan unos días... pero disfruta de la música ❤️");
             }
         }
     </script>
 </body>
-
 </html>
+
 
