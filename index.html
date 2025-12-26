@@ -5,9 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Regalo de Fin de Año</title>
     <style>
-        body {
-          <div class="clouds"></div>
-            .clouds {
+        .clouds {
     position: absolute;
     top: 0;
     left: 0;
@@ -19,6 +17,15 @@
     animation: moveClouds 30s linear infinite;
     z-index: 1; /* Para que esté detrás del sobre */
 }
+
+@keyframes moveClouds {
+    from { background-position: 0 0; }
+    to { background-position: 1000px 0; }
+}
+        body {
+          <div class="clouds"></div>
+            
+
 
 @keyframes moveClouds {
     from { background-position: 0 0; }
@@ -153,3 +160,4 @@
 </body>
 
 </html>
+
